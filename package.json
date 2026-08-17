@@ -1,0 +1,27 @@
+{
+  "name": "persistent-clicker",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A per-tab Chrome interval clicker that survives page navigation",
+  "type": "module",
+  "license": "AGPL-3.0-only",
+  "scripts": {
+    "browser:install": "playwright-core install --no-shell chromium",
+    "package": "node scripts/package.mjs",
+    "release:check": "npm test && npm run package && npm run test:e2e:package",
+    "test": "npm run test:unit && npm run validate",
+    "test:unit": "node --test tests/unit/*.test.js",
+    "test:e2e": "node scripts/browser.mjs test",
+    "test:e2e:package": "node scripts/test-package.mjs",
+    "screenshots": "node scripts/browser.mjs screenshots",
+    "validate": "node scripts/validate.mjs",
+    "verify": "npm test && npm run test:e2e"
+  },
+  "devDependencies": {
+    "fflate": "0.8.2",
+    "playwright-core": "1.62.1"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

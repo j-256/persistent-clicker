@@ -1,0 +1,19 @@
+export const EXTENSION_PACKAGE_FILES = Object.freeze([
+  "LICENSE",
+  "dashboard/dashboard.css",
+  "dashboard/dashboard.html",
+  "dashboard/dashboard.js",
+  "icons/icon-16.png",
+  "icons/icon-32.png",
+  "icons/icon-48.png",
+  "icons/icon-128.png",
+  "manifest.json",
+  "popup/popup.css",
+  "popup/popup.html",
+  "popup/popup.js",
+  "src/background.js",
+  "src/content.css",
+  "src/content.js",
+  "src/protocol.js",
+  "src/state.js"
+]);

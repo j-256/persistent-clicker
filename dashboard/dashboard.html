@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Open timers | Persistent Clicker</title>
+    <link rel="stylesheet" href="dashboard.css">
+  </head>
+  <body>
+    <main class="dashboard">
+      <header class="dashboard__header">
+        <div class="brand">
+          <img class="brand__icon" src="../icons/icon-48.png" alt="" width="44" height="44">
+          <div>
+            <p class="brand__name">Persistent Clicker</p>
+            <h1>Open timers</h1>
+            <p class="dashboard__intro">Stop a schedule here even while its tab is reloading.</p>
+          </div>
+        </div>
+        <span id="timer-count" class="timer-count" role="status">Loading</span>
+      </header>
+
+      <p id="error-message" class="error-message" role="alert" hidden></p>
+
+      <section id="empty-state" class="empty-state" hidden>
+        <span class="empty-state__mark" aria-hidden="true">✓</span>
+        <h2>No timers are running</h2>
+        <p>Start one from the Persistent Clicker popup on any web page.</p>
+      </section>
+
+      <ul id="timer-list" class="timer-list" aria-label="Running timers"></ul>
+    </main>
+
+    <template id="timer-template">
+      <li class="timer">
+        <article>
+          <header class="timer__header">
+            <div class="timer__identity">
+              <p class="timer__tab" data-tab-title></p>
+              <h2 data-target-label></h2>
+            </div>
+            <span class="timer__status" data-status>
+              <span class="timer__status-dot" aria-hidden="true"></span>
+              <span data-status-label></span>
+            </span>
+          </header>
+
+          <code class="timer__selector" data-selector></code>
+
+          <dl class="timer__metrics">
+            <div>
+              <dt>Interval</dt>
+              <dd data-interval></dd>
+            </div>
+            <div>
+              <dt>Next click</dt>
+              <dd data-next-click></dd>
+            </div>
+            <div>
+              <dt>Clicks</dt>
+              <dd data-click-count></dd>
+            </div>
+          </dl>
+
+          <p class="timer__detail" data-status-detail hidden></p>
+
+          <footer class="timer__actions">
+            <button class="button button--secondary" type="button" data-action="focus">Show tab</button>
+            <button class="button button--stop" type="button" data-action="stop">Stop timer</button>
+          </footer>
+        </article>
+      </li>
+    </template>
+
+    <script type="module" src="dashboard.js"></script>
+  </body>
+</html>

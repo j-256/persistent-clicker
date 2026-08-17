@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Persistent Clicker icon">
+  <rect x="16" y="16" width="96" height="96" rx="24" fill="#6658e8"/>
+  <circle cx="64" cy="64" r="36" fill="#fff"/>
+  <circle cx="64" cy="64" r="28" fill="#6658e8"/>
+  <path d="M57 49v31l24-15-24-16Z" fill="#fff"/>
+</svg>

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Reload page demo</title>
+    <link rel="stylesheet" href="fixture.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <strong>Example page</strong>
+      <span>Page <b id="page-number">1</b></span>
+    </header>
+
+    <main>
+      <section class="demo-card">
+        <p class="eyebrow">Example</p>
+        <h1>This button reloads the page.</h1>
+        <p class="lede">It comes back at a new URL after every click.</p>
+        <button id="reload-page" type="button">
+          <svg viewBox="0 0 20 20" aria-hidden="true">
+            <path d="M16 6.5A7 7 0 1 0 17 12"/>
+            <path d="m14 3 2.5 3.5L13 9"/>
+          </svg>
+          <span class="button__label">Reload page</span>
+        </button>
+      </section>
+    </main>
+
+    <script type="module" src="fixture.js"></script>
+  </body>
+</html>

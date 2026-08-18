@@ -11,6 +11,7 @@ export const EXTENSION_PACKAGE_FILES = Object.freeze([
   "popup/popup.css",
   "popup/popup.html",
   "popup/popup.js",
+  "src/action-popup.js",
   "src/background.js",
   "src/content.css",
   "src/content.js",

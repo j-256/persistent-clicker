@@ -12,7 +12,7 @@ Clicks one selected control on a per-tab interval that survives navigation.
 
 Persistent Clicker keeps clicking the control you choose, even when each click reloads the page or navigates the tab.
 
-Right-click a button or control and choose "Select for Persistent Clicker", or use the visual picker in the extension popup. Set an interval, start the schedule, and leave the tab open. The extension waits for the same selector after each navigation and resumes the cadence without replaying missed clicks.
+Right-click a button or control and choose "Select for Persistent Clicker" to select it and open the controls popup, or use the popup's visual picker. Set an interval, start the schedule, and leave the tab open. The extension waits for the same selector after each navigation and resumes the cadence without replaying missed clicks.
 
 Use the open-timers dashboard to review every running schedule, return to its tab, or stop it immediately. Schedules remain local to the browser session and disappear when the tab or browser closes.
 
@@ -39,7 +39,7 @@ Use `PRIVACY.md` as the privacy policy linked from the Chrome Web Store dashboar
 
 1. Open a regular HTTP or HTTPS page containing a button or link.
 2. Right-click that control and choose "Select for Persistent Clicker".
-3. Open the extension popup, enter a short interval, and choose "Start clicking".
+3. Confirm the extension popup opens with that control selected, enter a short interval, and choose "Start clicking".
 4. Confirm the control is clicked on schedule. If it navigates, confirm the schedule waits for the same selector and resumes.
 5. Choose "View open timers", then use "Show tab" and "Stop timer" to verify dashboard controls.
 

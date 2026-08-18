@@ -3,7 +3,7 @@
   "name": "Persistent Clicker",
   "version": "1.0.0",
   "description": "Clicks one selected control on a per-tab interval that survives navigation",
-  "minimum_chrome_version": "102",
+  "minimum_chrome_version": "127",
   "permissions": [
     "contextMenus",
     "scripting",

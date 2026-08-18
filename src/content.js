@@ -393,10 +393,11 @@
     pickMode = null;
   }
 
-  async function saveTarget(target) {
+  async function saveTarget(target, { openPopup = false } = {}) {
     const response = await sendMessage({
       type: MESSAGE.SELECT_TARGET,
-      target
+      target,
+      openPopup
     });
     applyState(response.state);
     return response;
@@ -517,9 +518,12 @@
         }
 
         const target = lastContextTarget;
-        void saveTarget(target)
+        void saveTarget(target, { openPopup: true })
           .then((response) => {
-            showToast(`Selected: ${target.label}`);
+            const message = response.popupOpened === false
+              ? `Selected: ${target.label}. Open the extension to continue`
+              : `Selected: ${target.label}`;
+            showToast(message);
             sendResponse(response);
           })
           .catch((error) => sendResponse({ ok: false, error: errorMessage(error) }));

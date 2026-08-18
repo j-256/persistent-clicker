@@ -10,6 +10,7 @@ const SKIPPED_DIRECTORIES = new Set([".git", "node_modules"]);
 const DOCUMENTATION_EXTENSIONS = new Set([".adoc", ".md", ".mdx", ".rst"]);
 const JAVASCRIPT_EXTENSIONS = new Set([".js", ".mjs"]);
 const PRIVATE_PATH_PATTERN = /\/(?:repo|x|c|z)\/|\/Users\/[^/\s]+\//;
+const MINIMUM_CHROME_VERSION = "127";
 const REQUIRED_FILES = Object.freeze([...new Set([
   ...EXTENSION_PACKAGE_FILES,
   "PRIVACY.md",
@@ -83,6 +84,11 @@ for (const relativePath of REQUIRED_FILES) {
 const manifest = await readJson(join(ROOT, "manifest.json"));
 const packageJson = await readJson(join(ROOT, "package.json"));
 assert.equal(manifest.manifest_version, 3, "manifest_version must be 3");
+assert.equal(
+  manifest.minimum_chrome_version,
+  MINIMUM_CHROME_VERSION,
+  `minimum_chrome_version must support chrome.action.openPopup (${MINIMUM_CHROME_VERSION}+)`
+);
 assert.equal(manifest.version, packageJson.version, "manifest and package versions must match");
 assert(
   manifest.description.length <= 132,

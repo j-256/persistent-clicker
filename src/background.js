@@ -4,6 +4,7 @@ import {
   MESSAGE,
   PAGE_URL_PATTERNS
 } from "./protocol.js";
+import { openPopupAfterSelection } from "./action-popup.js";
 import {
   MAX_INTERVAL_MS,
   MIN_INTERVAL_MS,
@@ -305,7 +306,17 @@ async function handleTabMessage(message, sender, tabId) {
     case MESSAGE.SELECT_TARGET: {
       assertPageSender(sender, tabId);
       const state = selectTarget(await readState(tabId), message.target);
-      return { ok: true, state: await saveAndBroadcast(state) };
+      const response = { ok: true, state: await saveAndBroadcast(state) };
+
+      if (message.openPopup === true) {
+        response.popupOpened = await openPopupAfterSelection(
+          chrome.action,
+          sender.tab,
+          response
+        );
+      }
+
+      return response;
     }
 
     case MESSAGE.ENTER_PICK_MODE:

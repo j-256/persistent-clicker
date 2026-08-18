@@ -441,11 +441,40 @@ async function waitForSelectedTarget(controlPage) {
   }, "The selected target did not reach the popup");
 }
 
+async function verifyContextSelectionPopup(
+  browserSession,
+  fixturePage,
+  controlPage,
+  tabId
+) {
+  const popupUrl = new URL("/popup/popup.html", controlPage.url()).href;
+  await fixturePage.bringToFront();
+  await fixturePage.locator(TARGET_LABEL_SELECTOR).click({ button: "right" });
+  await fixturePage.keyboard.press("Escape");
+  const response = await sendToContent(
+    controlPage,
+    tabId,
+    { type: "select-context-target" }
+  );
+  assert.equal(response.popupOpened, true, "Chrome did not open the action popup");
+  await poll(async () => {
+    const { targetInfos } = await browserSession.send("Target.getTargets");
+    return targetInfos.some((target) => target.url === popupUrl);
+  }, "Chrome did not expose the loaded action popup target");
+  await fixturePage.bringToFront();
+  console.log("Verified context-menu selection opens the action popup");
+}
+
 async function chooseWithContextMenu(fixturePage, controlPage, tabId) {
   await fixturePage.bringToFront();
   await fixturePage.locator(TARGET_LABEL_SELECTOR).click({ button: "right" });
   await fixturePage.keyboard.press("Escape");
-  await sendToContent(controlPage, tabId, { type: "select-context-target" });
+  const response = await sendToContent(
+    controlPage,
+    tabId,
+    { type: "select-context-target" }
+  );
+  assert.equal(typeof response.popupOpened, "boolean");
   await waitForSelectedTarget(controlPage);
 }
 
@@ -841,6 +870,12 @@ async function main() {
     await verifyPickerRecovery(fixturePage, controlPage, "installation");
 
     if (mode === "screenshots") {
+      await verifyContextSelectionPopup(
+        launched.browserSession,
+        fixturePage,
+        controlPage,
+        tabId
+      );
       await captureScreenshots(
         launched.context,
         launched.worker,

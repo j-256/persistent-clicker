@@ -15,8 +15,8 @@ For local `file://` pages, also enable **Allow access to file URLs** on the exte
 
 ## Use
 
-1. Right-click the button or control and choose **Select for Persistent Clicker**. Right-clicking its icon or text selects the nearest actionable control.
-2. Open the extension, set the interval in seconds, and choose **Start clicking**.
+1. Right-click the button or control and choose **Select for Persistent Clicker**. Right-clicking its icon or text selects the nearest actionable control and opens the controls popup automatically.
+2. Set the interval in seconds and choose **Start clicking**.
 3. Leave the tab open. The extension waits for the same selector after every reload or navigation, clicks once when it is ready, and resumes the cadence without replaying missed intervals.
 4. Choose **Stop** in the popup, or use the open-timers dashboard when finished.
 

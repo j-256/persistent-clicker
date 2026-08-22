@@ -8,6 +8,7 @@ import { dirname, extname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
 import { chromium } from "playwright-core";
+import { sendFixtureServerError } from "./fixture-server-error.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const EXTENSION_ROOT = resolve(
@@ -172,8 +173,7 @@ async function startFixtureServer() {
       });
       response.end(content);
     } catch (error) {
-      response.writeHead(500);
-      response.end(error instanceof Error ? error.message : String(error));
+      sendFixtureServerError(response, error);
     }
   });
 

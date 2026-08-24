@@ -10,7 +10,7 @@
     "package": "node scripts/package.mjs",
     "release:check": "npm test && npm run package && npm run test:e2e:package",
     "test": "npm run test:unit && npm run validate",
-    "test:unit": "node --test tests/unit/*.test.js",
+    "test:unit": "node --test test/unit/*.test.js",
     "test:e2e": "node scripts/browser.mjs test",
     "test:e2e:package": "node scripts/test-package.mjs",
     "screenshots": "node scripts/browser.mjs screenshots",

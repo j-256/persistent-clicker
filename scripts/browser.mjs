@@ -14,7 +14,7 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const EXTENSION_ROOT = resolve(
   process.env.PERSISTENT_CLICKER_EXTENSION_ROOT || ROOT
 );
-const FIXTURE_ROOT = join(ROOT, "tests", "fixtures");
+const FIXTURE_ROOT = join(ROOT, "test", "fixtures");
 const SCREENSHOT_ROOT = join(ROOT, "docs", "screenshots");
 const STORE_ASSET_ROOT = join(ROOT, "store-assets");
 const BROWSER_OVERRIDE = process.env.PERSISTENT_CLICKER_BROWSER;

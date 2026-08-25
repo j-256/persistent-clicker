@@ -70,6 +70,8 @@ npm run release:check
 
 The release check verifies the extension in Chrome for Testing and writes a deterministic Chrome Web Store ZIP to `dist/`. The archive contains only extension runtime files and places `manifest.json` at its root.
 
+Use `npm version` as the only release entrypoint. To publish the version already declared in `package.json`, run `npm version "$(node -p 'require("./package.json").version')" --allow-same-version`; later releases use `npm version <major|minor|patch>`. Both forms run the clean-main and remote-synchronization guard, repeat the release check, synchronize `manifest.json`, create the version commit and tag, and push both refs atomically. The tag-triggered GitHub Actions workflow repeats package verification and creates a published GitHub Release containing the exact Chrome Web Store ZIP; an explicit workflow dispatch can safely retry an existing tag.
+
 [Store listing copy and submission notes](store-assets/listing.md) accompany the required listing images in `store-assets/`. [The privacy policy](PRIVACY.md) documents the extension's local-only handling of selectors, schedules, page controls, and tab titles.
 
 Licensed under [AGPL-3.0-only](LICENSE).

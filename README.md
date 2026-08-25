@@ -32,7 +32,7 @@ The popup and dashboard follow the browser's light or dark system appearance.
 
 Choose **View open timers** in the popup, or right-click the extension's toolbar icon and choose **Open timer dashboard**. The dashboard stays open while target tabs reload, lists every running schedule, and lets you show its tab or stop it immediately.
 
-<p><img src="docs/screenshots/dashboard.png" alt="The open-timers dashboard with multiple running schedules in light mode" width="400"> <img src="docs/screenshots/dashboard-dark.png" alt="The open-timers dashboard with multiple running schedules in dark mode" width="400"></p>
+<p><img src="docs/screenshots/cover.png" alt="The open-timers dashboard with multiple running schedules in light mode" width="400"> <img src="docs/screenshots/dashboard-dark.png" alt="The open-timers dashboard with multiple running schedules in dark mode" width="400"></p>
 
 ## Playground
 

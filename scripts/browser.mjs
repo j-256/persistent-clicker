@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
-import { access, mkdtemp, mkdir, readFile, rm } from "node:fs/promises";
+import { access, copyFile, mkdtemp, mkdir, readFile, rm } from "node:fs/promises";
 import { constants as fsConstants } from "node:fs";
 import { createServer } from "node:http";
 import { tmpdir } from "node:os";
@@ -777,6 +777,10 @@ async function captureScreenshots(
     fullPage: true,
     animations: "disabled"
   });
+  await copyFile(
+    join(SCREENSHOT_ROOT, "dashboard.png"),
+    join(SCREENSHOT_ROOT, "cover.png")
+  );
   await dashboardPage.emulateMedia({ colorScheme: "dark", reducedMotion: "reduce" });
   await settleVisual(dashboardPage);
   await dashboardPage.screenshot({

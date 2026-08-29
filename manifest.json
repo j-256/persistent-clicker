@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Persistent Clicker",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Clicks one selected control on a per-tab interval that survives navigation",
   "minimum_chrome_version": "127",
   "permissions": [

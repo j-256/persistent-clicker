@@ -196,6 +196,11 @@ export function updateStatus(state, status, detail = null) {
   return evolve(state, { status, statusDetail });
 }
 
+function nextCadenceRunAt(scheduledAt, intervalMs, now) {
+  const elapsedIntervals = Math.floor((now - scheduledAt) / intervalMs);
+  return scheduledAt + ((elapsedIntervals + 1) * intervalMs);
+}
+
 export function claimDueClick(state, expected, now = Date.now()) {
   const matchesSchedule = state.running
     && state.target?.selector === expected?.selector
@@ -208,7 +213,7 @@ export function claimDueClick(state, expected, now = Date.now()) {
   return {
     authorized: true,
     state: evolve(state, {
-      nextRunAt: now + state.intervalMs,
+      nextRunAt: nextCadenceRunAt(state.nextRunAt, state.intervalMs, now),
       clickCount: state.clickCount + 1,
       lastClickedAt: now,
       status: STATE_STATUS.SCHEDULED,

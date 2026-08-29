@@ -99,7 +99,25 @@ test("only the matching due schedule can claim a click", () => {
   assert.equal(due.authorized, true);
   assert.equal(due.state.clickCount, 1);
   assert.equal(due.state.lastClickedAt, 3_100);
-  assert.equal(due.state.nextRunAt, 4_100);
+  assert.equal(due.state.nextRunAt, 4_000);
+});
+
+test("late clicks keep cadence without replaying missed intervals", () => {
+  const running = startTimer(
+    selectTarget(createTabState(TAB_ID), TARGET, SELECTED_AT),
+    { ...TARGET, intervalMs: 1_000 },
+    STARTED_AT
+  );
+
+  const due = claimDueClick(running, {
+    selector: TARGET.selector,
+    nextRunAt: 3_000
+  }, 5_100);
+
+  assert.equal(due.authorized, true);
+  assert.equal(due.state.clickCount, 1);
+  assert.equal(due.state.lastClickedAt, 5_100);
+  assert.equal(due.state.nextRunAt, 6_000);
 });
 
 test("stopping preserves the target and click history", () => {

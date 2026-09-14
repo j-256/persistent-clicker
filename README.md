@@ -74,4 +74,8 @@ Use `npm version` as the only release entrypoint. To publish the version already
 
 [Store listing copy and submission notes](store-assets/listing.md) accompany the required listing images in `store-assets/`. [The privacy policy](PRIVACY.md) documents the extension's local-only handling of selectors, schedules, page controls, and tab titles.
 
+## Project cover automation
+
+Run `npm run capture:cover` to regenerate `docs/screenshots/cover.png` from the actual application with synthetic inputs. CI runs the capture during source verification and retains the image as an artifact. Successful default-branch verification publishes a changed cover with an image-only commit; pull requests render without publishing. Publication skips superseded source revisions so an older build cannot overwrite a newer cover. The cover command runs headlessly and leaves the native menu and store artwork to `npm run screenshots`.
+
 Licensed under [AGPL-3.0-only](LICENSE).

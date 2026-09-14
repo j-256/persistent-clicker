@@ -19,7 +19,8 @@
     "test:e2e:package": "node scripts/test-package.mjs",
     "screenshots": "node scripts/browser.mjs screenshots",
     "validate": "node scripts/validate.mjs",
-    "verify": "npm test && npm run test:e2e"
+    "verify": "npm test && npm run test:e2e",
+    "capture:cover": "node scripts/browser.mjs cover"
   },
   "devDependencies": {
     "fflate": "0.8.3",

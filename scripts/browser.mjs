@@ -51,13 +51,28 @@ const SCREEN_BOUNDS_SCRIPT = [
   "[Number(frame.origin.x), Number(frame.origin.y), Number(frame.size.width), Number(frame.size.height)].join(',')"
 ].join("; ");
 const FIXTURE_FILES = new Set(["navigation.html", "fixture.css", "fixture.js"]);
+const MODE = Object.freeze({ TEST: "test", SCREENSHOTS: "screenshots", COVER: "cover" });
 const mode = process.argv[2];
-const execFileAsync = promisify(execFile);
+const HELP = `Usage: node scripts/browser.mjs <test|screenshots|cover>
 
-assert(
-  mode === "test" || mode === "screenshots",
-  "Usage: node scripts/browser.mjs <test|screenshots>"
-);
+  test         Verify the extension headlessly against local fixtures
+  screenshots  Capture interface and store images, including native macOS menus
+  cover        Capture only docs/screenshots/cover.png headlessly
+
+Install dependencies with npm ci and the browser with npm run browser:install.
+PERSISTENT_CLICKER_BROWSER selects another Chrome for Testing executable.
+PERSISTENT_CLICKER_EXTENSION_ROOT selects an unpacked extension directory.
+Exit status: 0 success, 1 verification or capture failure, 2 invalid arguments.
+`;
+if (mode === "-h" || mode === "--help") {
+  process.stdout.write(HELP);
+  process.exit(0);
+}
+if (!Object.values(MODE).includes(mode) || process.argv.length !== 3) {
+  process.stderr.write(HELP);
+  process.exit(2);
+}
+const execFileAsync = promisify(execFile);
 
 const CONTENT_TYPE = Object.freeze({
   ".css": "text/css; charset=utf-8",
@@ -219,10 +234,10 @@ async function launchBrowser() {
   try {
     const context = await chromium.launchPersistentContext(profilePath, {
       ...browserLaunchOptions,
-      headless: mode === "test",
+      headless: mode !== MODE.SCREENSHOTS,
       ignoreDefaultArgs: ["--disable-extensions"],
       reducedMotion: "reduce",
-      deviceScaleFactor: mode === "screenshots"
+      deviceScaleFactor: mode !== MODE.TEST
         ? SCREENSHOT_DEVICE_SCALE_FACTOR
         : DEFAULT_DEVICE_SCALE_FACTOR,
       viewport: BROWSER_VIEWPORT,
@@ -279,7 +294,7 @@ async function fixtureTabId(worker, fixturePage) {
 
 async function openControlPage(context, extensionId, tabId, errors) {
   const controlPage = await context.newPage();
-  const captureQuery = mode === "screenshots" ? "&capture=1" : "";
+  const captureQuery = mode !== MODE.TEST ? "&capture=1" : "";
   collectPageErrors(controlPage, errors);
 
   try {
@@ -746,6 +761,13 @@ async function captureScreenshots(
     path: join(SCREENSHOT_ROOT, "popup-dark.png"),
     animations: "disabled"
   });
+  await captureDashboard(context, worker, extensionId, fixturePage, controlPage, tabId, errors);
+  await captureStorePromo(context);
+  console.log("Updated Chrome, interface, and store listing screenshots");
+}
+
+async function captureDashboard(context, worker, extensionId, fixturePage, controlPage, tabId, errors) {
+  await mkdir(SCREENSHOT_ROOT, { recursive: true });
   const secondaryTimers = [];
 
   for (const timer of SECONDARY_CAPTURE_TIMERS) {
@@ -772,22 +794,22 @@ async function captureScreenshots(
   );
   await dashboardPage.emulateMedia({ colorScheme: "light", reducedMotion: "reduce" });
   await settleVisual(dashboardPage);
+  await dashboardPage.evaluate(() => document.fonts.ready);
   await dashboardPage.screenshot({
-    path: join(SCREENSHOT_ROOT, "dashboard.png"),
+    path: join(SCREENSHOT_ROOT, "cover.png"),
     fullPage: true,
     animations: "disabled"
   });
-  await copyFile(
-    join(SCREENSHOT_ROOT, "dashboard.png"),
-    join(SCREENSHOT_ROOT, "cover.png")
-  );
-  await dashboardPage.emulateMedia({ colorScheme: "dark", reducedMotion: "reduce" });
-  await settleVisual(dashboardPage);
-  await dashboardPage.screenshot({
-    path: join(SCREENSHOT_ROOT, "dashboard-dark.png"),
-    fullPage: true,
-    animations: "disabled"
-  });
+  if (mode === MODE.SCREENSHOTS) {
+    await copyFile(join(SCREENSHOT_ROOT, "cover.png"), join(SCREENSHOT_ROOT, "dashboard.png"));
+    await dashboardPage.emulateMedia({ colorScheme: "dark", reducedMotion: "reduce" });
+    await settleVisual(dashboardPage);
+    await dashboardPage.screenshot({
+      path: join(SCREENSHOT_ROOT, "dashboard-dark.png"),
+      fullPage: true,
+      animations: "disabled"
+    });
+  }
   await stopFromDashboard(dashboardPage, tabId, { expectEmpty: false });
 
   for (const [index, secondary] of secondaryTimers.entries()) {
@@ -798,8 +820,6 @@ async function captureScreenshots(
     await secondary.control.close();
     await secondary.fixture.close();
   }
-  await captureStorePromo(context);
-  console.log("Updated Chrome, interface, and store listing screenshots");
 }
 
 async function verifyNavigationPersistence(
@@ -873,7 +893,13 @@ async function main() {
 
     await verifyPickerRecovery(fixturePage, controlPage, "installation");
 
-    if (mode === "screenshots") {
+    if (mode === MODE.COVER) {
+      await chooseWithContextMenu(fixturePage, controlPage, tabId);
+      await startFromPopup(controlPage, SCREENSHOT_INTERVAL_SECONDS);
+      await captureDashboard(launched.context, launched.worker, launched.extensionId,
+        fixturePage, controlPage, tabId, errors);
+      console.log("Updated docs/screenshots/cover.png");
+    } else if (mode === MODE.SCREENSHOTS) {
       await verifyContextSelectionPopup(
         launched.browserSession,
         fixturePage,

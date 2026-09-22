@@ -37,6 +37,7 @@ const SECONDARY_CAPTURE_TIMERS = Object.freeze([
 ]);
 const DEFAULT_DEVICE_SCALE_FACTOR = 1;
 const SCREENSHOT_DEVICE_SCALE_FACTOR = 2;
+const COVER_DEVICE_SCALE_FACTOR = 4;
 const BROWSER_VIEWPORT = Object.freeze({ width: 900, height: 560 });
 const PICKER_RESIZE_VIEWPORT = Object.freeze({ width: 980, height: 620 });
 const STORE_SCREENSHOT_VIEWPORT = Object.freeze({ width: 1_280, height: 800 });
@@ -237,9 +238,11 @@ async function launchBrowser() {
       headless: mode !== MODE.SCREENSHOTS,
       ignoreDefaultArgs: ["--disable-extensions"],
       reducedMotion: "reduce",
-      deviceScaleFactor: mode !== MODE.TEST
-        ? SCREENSHOT_DEVICE_SCALE_FACTOR
-        : DEFAULT_DEVICE_SCALE_FACTOR,
+      deviceScaleFactor: mode === MODE.COVER
+        ? COVER_DEVICE_SCALE_FACTOR
+        : mode !== MODE.TEST
+          ? SCREENSHOT_DEVICE_SCALE_FACTOR
+          : DEFAULT_DEVICE_SCALE_FACTOR,
       viewport: BROWSER_VIEWPORT,
       args: [
         "--disable-component-update",

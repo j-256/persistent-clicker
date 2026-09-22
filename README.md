@@ -79,3 +79,7 @@ Use `npm version` as the only release entrypoint. To publish the version already
 Run `npm run capture:cover` to regenerate `docs/screenshots/cover.png` from the actual application with synthetic inputs. CI runs the capture during source verification and retains the image as an artifact. Successful default-branch verification publishes a changed cover with an image-only commit; pull requests render without publishing. Publication skips superseded source revisions so an older build cannot overwrite a newer cover. The cover command runs headlessly and leaves the native menu and store artwork to `npm run screenshots`.
 
 Licensed under [AGPL-3.0-only](LICENSE).
+
+## Cover image density
+
+The project cover is rendered at 4x pixel density while preserving its logical viewport, so enlarged previews retain more detail. Higher density does not increase the displayed text size; use zoom to inspect small labels.
